@@ -1,0 +1,170 @@
+version: '3.8'
+
+services:
+  emailservice:
+    image: yakub363/emailservice:v1.0
+    container_name: emailservice
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - microservices-net
+
+  shippingservice:
+    image: yakub363/shippingservice:v1.0
+    container_name: shippingservice
+    ports:
+      - "50051:50051"
+    healthcheck:
+      test: ["CMD", "grpc_health_probe", "-addr=:50051"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - microservices-net
+
+  recommendationservice:
+    image: yakub363/recommendationservice:v1.0
+    container_name: recommendationservice
+    expose:
+      - "8080"
+    environment:
+      - PRODUCT_CATALOG_SERVICE_ADDR=productcatalogservice:3550
+    depends_on:
+      - productcatalogservice
+    networks:
+      - microservices-net
+
+  cartservice:
+    image: yakub363/cartservice:v1.0
+    container_name: cartservice
+    ports:
+      - "7070:7070"
+    environment:
+      - REDIS_HOST=redis:6379
+    depends_on:
+      - redis
+    networks:
+      - microservices-net
+
+  redis:
+    image: redis:6.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - microservices-net
+
+  productcatalogservice:
+    image: yakub363/productcatalogservice:v1.0
+    container_name: productcatalogservice
+    ports:
+      - "3550:3550"
+    networks:
+      - microservices-net
+
+  currencyservice:
+    image: yakub363/currencyservice:v1.0
+    container_name: currencyservice
+    expose:
+      - "7000"
+    environment:
+      - DISABLE_PROFILER=true
+    networks:
+      - microservices-net
+
+  paymentservice:
+    image: yakub363/paymentservice:v1.0
+    container_name: paymentservice
+    expose:
+      - "50051"
+    environment:
+      - PORT=3002
+      - DISABLE_PROFILER=true
+    networks:
+      - microservices-net
+
+  checkoutservice:
+    image: yakub363/checkoutservice:v1.0
+    container_name: checkoutservice
+    ports:
+      - "5050:5050"
+    environment:
+      - SHIPPING_SERVICE_ADDR=shippingservice:50051
+      - PRODUCT_CATALOG_SERVICE_ADDR=productcatalogservice:3550
+      - CART_SERVICE_ADDR=cartservice:7070
+      - PAYMENT_SERVICE_ADDR=paymentservice:50051
+      - CURRENCY_SERVICE_ADDR=currencyservice:7000
+      - EMAIL_SERVICE_ADDR=emailservice:8080
+    depends_on:
+      - shippingservice
+      - productcatalogservice
+      - cartservice
+      - paymentservice
+      - currencyservice
+      - emailservice
+    networks:
+      - microservices-net
+
+  adservice:
+    image: yakub363/adservice:v1.0
+    container_name: adservice
+    ports:
+      - "9555:9555"
+    networks:
+      - microservices-net
+
+  frontend:
+    image: yakub363/frontend:v1.0
+    container_name: frontend
+    ports:
+      - "8080:8080"
+    environment:
+      - PRODUCT_CATALOG_SERVICE_ADDR=productcatalogservice:3550
+      - PAYMENT_SERVICE_ADDR=paymentservice:50051
+      - CURRENCY_SERVICE_ADDR=currencyservice:7000
+      - CART_SERVICE_ADDR=cartservice:7070
+      - CHECKOUT_SERVICE_ADDR=checkoutservice:5050
+      - RECOMMENDATION_SERVICE_ADDR=recommendationservice:8080
+      - SHIPPING_SERVICE_ADDR=shippingservice:50051
+      - AD_SERVICE_ADDR=adservice:9555
+      - EMAIL_SERVICE_ADDR=emailservice:8080
+      - SHOPPING_ASSISTANT_SERVICE_ADDR=shoppingassistantservice:8080
+    depends_on:
+      - checkoutservice
+      - adservice
+      - recommendationservice
+      - emailservice
+    networks:
+      - microservices-net
+
+  shoppingassistantservice:
+    image: yakub363/shoppingassistantservice:v1.0
+    container_name: shoppingassistantservice
+    expose:
+      - "8080"
+    environment:
+      - DISABLE_PROFILER=true
+      - PROJECT_ID=dummy-project-id
+      - REGION=dummy-region
+      - ALLOYDB_DATABASE_NAME=dummy-database-name
+      - ALLOYDB_TABLE_NAME=dummy-table-name
+      - ALLOYDB_CLUSTER_NAME=dummy-cluster-name
+      - ALLOYDB_INSTANCE_NAME=dummy-instance-name
+      - ALLOYDB_SECRET_NAME=dummy-secret-name
+    networks:
+      - microservices-net
+
+volumes:
+  redis_data:
+
+networks:
+  microservices-net:
+    driver: bridge
+
