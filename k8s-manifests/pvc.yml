@@ -11,3 +11,18 @@ spec:
       storage: 1Gi
   storageClassName: standard
 
+---
+#postgres pvc
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: dev
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard 
+
