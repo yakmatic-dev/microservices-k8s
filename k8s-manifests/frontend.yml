@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: frontend-deploy
   namespace: dev
   labels:
     app: frontend
@@ -15,7 +15,7 @@ spec:
       labels:
         app: frontend
     spec:
-      serviceAccountName: frontend
+      serviceAccountName: frontend-sa
       securityContext:
         fsGroup: 1000
         runAsGroup: 1000
@@ -86,7 +86,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: frontend-service
   namespace: dev
   labels:
     app: frontend
@@ -103,6 +103,6 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: frontend
+  name: frontend-sa
   namespace: dev
 

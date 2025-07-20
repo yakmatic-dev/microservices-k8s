@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: recommendationservice
+  name: recommendation-deploy
   namespace: dev
   labels:
-    app: recommendationservice
+    app: recommendationapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: recommendationservice
+      app: recommendationapp
   template:
     metadata:
       labels:
-        app: recommendationservice
+        app: recommendationapp
     spec:
-      serviceAccountName: recommendationservice
+      serviceAccountName: recommendationapp-sa
       terminationGracePeriodSeconds: 5
       securityContext:
         fsGroup: 1000
@@ -71,7 +71,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: recommendationservice
+    app: recommendationapp
   ports:
     - port: 8080
       targetPort: 8080
@@ -80,6 +80,6 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: recommendationservice
+  name: recommendationapp-sa
   namespace: dev
 

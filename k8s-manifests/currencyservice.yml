@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: currencyservice
+  name: currencyapp-deploy
   namespace: dev
   labels:
-    app: currencyservice
+    app: currencyapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: currencyservice
+      app: currencyapp
   template:
     metadata:
       labels:
-        app: currencyservice
+        app: currencyapp
     spec:
-      serviceAccountName: currencyservice
+      serviceAccountName: currencyapp-sa
       terminationGracePeriodSeconds: 5
       securityContext:
         fsGroup: 1000
@@ -71,7 +71,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: currencyservice
+    app: currencyapp
   ports:
     - port: 7000
       targetPort: 7000
@@ -82,6 +82,6 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: currencyservice
+  name: currencyapp-sa
   namespace: dev
 

@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shippingservice
+  name: shipping-deploy
   namespace: dev
   labels:
-    app: shippingservice
+    app: shippingapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: shippingservice
+      app: shippingapp
   template:
     metadata:
       labels:
-        app: shippingservice
+        app: shippingapp
     spec:
-      serviceAccountName: shippingservice
+      serviceAccountName: shippingapp-sa
       securityContext:
         fsGroup: 1000
         runAsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
       containers:
-      - name: server
+      - name: shippingservice
         image: yakub363/shippingservice:v1.0
         ports:
         - containerPort: 50051
@@ -66,7 +66,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: shippingservice
+    app: shippingapp
   ports:
   - port: 50051
     targetPort: 50051
@@ -74,6 +74,6 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: shippingservice
+  name: shippingapp-sa
   namespace: dev
 

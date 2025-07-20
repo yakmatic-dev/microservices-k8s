@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: paymentservice
+  name: payment-deploy
   namespace: dev
   labels:
-    app: paymentservice
+    app: paymentapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: paymentservice
+      app: paymentapp
   template:
     metadata:
       labels:
-        app: paymentservice
+        app: paymentapp
     spec:
-      serviceAccountName: paymentservice
+      serviceAccountName: paymentapp-sa
       terminationGracePeriodSeconds: 5
       securityContext:
         fsGroup: 1000
@@ -71,7 +71,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: paymentservice
+    app: paymentapp
   ports:
     - port: 50051
       targetPort: 50051
@@ -82,6 +82,6 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: paymentservice
+  name: paymentapp-sa
   namespace: dev
 
