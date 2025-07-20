@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: checkoutservice-deploy
+  name: checkoutapp-deploy
   namespace: dev
   labels:
-    app: checkoutservice
+    app: checkoutapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: checkoutservice
+      app: checkoutapp
   template:
     metadata:
       labels:
-        app: checkoutservice
+        app: checkoutapp
     spec:
-      serviceAccountName: checkoutservice-sa
+      serviceAccountName: checkoutapp-sa
       terminationGracePeriodSeconds: 5
       securityContext:
         fsGroup: 1000
@@ -79,7 +79,7 @@ metadata:
     app: checkoutservice
 spec:
   selector:
-    app: checkoutservice
+    app: checkoutapp
   ports:
   - protocol: TCP
     port: 5050
@@ -90,6 +90,6 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: checkoutservice-sa
+  name: checkoutapp-sa
   namespace: dev
 

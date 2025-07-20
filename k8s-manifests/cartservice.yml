@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cartservice
+  name: cartapp-deploy
   namespace: dev
   labels:
-    app: cartservice
+    app: cartapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cartservice
+      app: cartapp
   template:
     metadata:
       labels:
-        app: cartservice
+        app: cartapp
     spec:
-      serviceAccountName: cartservice
+      serviceAccountName: cartapp-sa
       terminationGracePeriodSeconds: 5
       securityContext:
         fsGroup: 1000
@@ -72,7 +72,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: cartservice
+    app: cartapp
   ports:
     - name: grpc
       port: 7070
@@ -82,6 +82,6 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: cartservice
+  name: cartapp-sa
   namespace: dev
 

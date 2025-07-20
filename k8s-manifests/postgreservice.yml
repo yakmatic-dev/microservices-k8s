@@ -13,6 +13,7 @@ spec:
       labels:
         app: postgres
     spec:
+      serviceAccountName: postgres
       containers:
       - name: postgres
         image: postgres:16
@@ -52,4 +53,11 @@ spec:
     targetPort: 5432
     protocol: TCP
   type: ClusterIP
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: postgres
+  namespace: dev
 

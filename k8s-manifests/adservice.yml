@@ -4,18 +4,18 @@ metadata:
   name: ad-deployment
   namespace: dev
   labels:
-    app: adservice
+    app: adapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: adservice
+      app: adapp
   template:
     metadata:
       labels:
-        app: adservice
+        app: adapp
     spec:
-      serviceAccountName: adservice-sa
+      serviceAccountName: adapp-sa
       terminationGracePeriodSeconds: 5
       securityContext:
         fsGroup: 1000
@@ -67,7 +67,7 @@ metadata:
     app: adservice
 spec:
   selector:
-    app: adservice
+    app: adapp
   ports:
   - protocol: TCP
     port: 9555
@@ -78,6 +78,6 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: adservice-sa
+  name: adapp-sa
   namespace: dev
 

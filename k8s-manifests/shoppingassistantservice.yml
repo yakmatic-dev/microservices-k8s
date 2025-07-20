@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shoppingassistantservice
+  name: shoppingassistant-deploy
   namespace: dev
   labels:
-    app: shoppingassistantservice
+    app: shoppingassistantapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: shoppingassistantservice
+      app: shoppingassistantapp
   template:
     metadata:
       labels:
-        app: shoppingassistantservice
+        app: shoppingassistantapp
     spec:
-      serviceAccountName: shoppingassistantservice
+      serviceAccountName: shoppingassistantapp-sa
       securityContext:
         fsGroup: 1000
         runAsGroup: 1000
         runAsNonRoot: true
         runAsUser: 1000
       containers:
-      - name: server
+      - name: shoppingassistantservice
         image: yakub363/shoppingassistantservice:v1.0
         ports:
         - containerPort: 8080
@@ -81,7 +81,7 @@ metadata:
     app: shoppingassistantservice
 spec:
   selector:
-    app: shoppingassistantservice
+    app: shoppingassistantapp
   ports:
   - port: 8080
     targetPort: 8080
@@ -90,6 +90,6 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: shoppingassistantservice
+  name: shoppingassistantapp-sa
   namespace: dev
 
