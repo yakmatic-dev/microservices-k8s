@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+  namespace: dev
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+    spec:
+      containers:
+      - name: node-exporter
+        image: prom/node-exporter:latest
+        args:
+          - --path.procfs=/host/proc
+          - --path.sysfs=/host/sys
+        ports:
+        - name: metrics
+          containerPort: 9100
+        volumeMounts:
+        - name: procfs
+          mountPath: /host/proc
+          readOnly: true
+        - name: sysfs
+          mountPath: /host/sys
+          readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: 9100
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: 9100
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+      volumes:
+      - name: procfs
+        hostPath:
+          path: /proc
+      - name: sysfs
+        hostPath:
+          path: /sys
+
