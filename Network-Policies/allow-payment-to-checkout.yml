@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-checkout-to-payment
+  namespace: dev
+spec:
+  podSelector:
+    matchLabels:
+      app: paymentapp
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: checkoutapp
+  policyTypes:
+  - Ingress
+
