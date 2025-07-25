@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-adapp
+  namespace: dev
+spec:
+  podSelector:
+    matchLabels:
+      app: adapp
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: frontend
+  policyTypes:
+  - Ingress
+

@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-cart
+  namespace: dev
+spec:
+  podSelector:
+    matchLabels:
+      app: cartapp
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: frontend
+  policyTypes:
+  - Ingress
+
