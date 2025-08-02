@@ -1,0 +1,38 @@
+replicaCount: 1
+image:
+  repository: yakub363/cartservice
+  tag: v1.0
+  pullPolicy: IfNotPresent
+service:
+  name: cartservice
+  type: ClusterIP
+  port: 7070
+containerPort: 7070
+resources:
+  limits:
+    cpu: 300m
+    memory: 128Mi
+  requests:
+    cpu: 200m
+    memory: 64Mi
+namespace: dev
+fullnameOverride: ""
+nameOverride: ""
+serviceAccount:
+  create: true
+  name: cartapp-sa
+env:
+  redisAddr: "redis:6379"
+  redisPasswordSecret:
+    name: redis-secret
+    key: password
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 7
+  cpu: 60
+  memory: 60
+pdb:
+  enabled: true
+  maxUnavailable: 1
+
