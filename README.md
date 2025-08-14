@@ -31,7 +31,7 @@ Online Boutique is a cloud-native microservices demonstration application implem
 | **Alertmanager**   | Handles alerts from Prometheus                                              |
 
 ## 3. Deployment Architecture <a name="deployment-architecture"></a>
-
+```mermaid
 
 graph TD
     A[User] --> B[frontend:80]
