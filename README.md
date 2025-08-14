@@ -167,3 +167,86 @@ kubectl get horizontalpodautoscaler -n dev
 NAME             REFERENCE                   TARGETS                        MINPODS   MAXPODS   REPLICAS   AGE
 adservice-hpa    Deployment/ad-deployment    cpu: 2%/70%, memory: 51%/75%   2         5         2          4m54s
 cartapp-hpa      Deployment/cartapp-deploy   cpu: 2%/60%, memory: 45%/60%   2         7         2          4m54s
+7. Monitoring Stack <a name="monitoring-stack"></a>
+Production-grade monitoring implemented with Prometheus and Grafana:
+
+bash
+# Install Prometheus
+helm install prometheus prometheus-community/prometheus \
+  --namespace monitoring
+
+# Install Grafana
+helm install grafana grafana/grafana \
+  --namespace monitoring 
+Monitoring Features:
+
+Real-time Service Metrics: Latency, error rates, request volumes
+
+Resource Utilization: CPU/Memory usage per service and pod
+
+Kubernetes Cluster Health: Node status, pod distribution, resource allocation
+
+Business KPIs: Orders per minute, conversion rates, cart abandonment
+
+Custom Alerting: SLA violations, error spikes, resource exhaustion
+
+Distributed Tracing: End-to-end transaction visibility across services
+ Production-Grade Features <a name="production-grade-features"></a>
+Resilience Mechanisms <a name="resilience-mechanisms"></a>
+Pod Disruption Budgets (PDB):
+
+Network Policies
+
+Liveness and Readiness Probes:
+
+Security Controls <a name="security-controls"></a>
+RBAC Configuration
+
+Secrets Management
+
+Pod Security Policies
+
+9. Future Improvements Roadmap <a name="future-improvements-roadmap"></a>
+KEDA Implementation <a name="keda-implementation"></a>
+
+graph LR
+A[Redis Queue Depth] --> B[KEDA Scaler]
+B --> C[Kubernetes HPA]
+C --> D[cartservice Pods]
+
+GitOps with Argo CD <a name="gitops-with-argo-cd"></a>
+
+YugabyteDB Distributed SQL <a name="yugabytedb-distributed-sql"></a>
+
+Open Policy Agent (OPA) <a name="open-policy-agent-opa"></a>
+
+Service Mesh Integration <a name="service-mesh-integration"></a>
+Istio Implementation
+
+# Clone repository
+git clone https://github.com/yakmatic-dev/microservices-k8s.git
+cd microservices-k8s
+
+# Create namespace
+kubectl create namespace dev
+
+# Apply Kubernetes manifests
+kubectl apply -f k8s-manifests/ -n dev
+
+# Verify deployment
+kubectl get all -n dev
+
+# Access application
+kubectl port-forward svc/frontend-service 8080:80 -n dev
+
+# Open in browser
+http://localhost:8080
+
+# Access Grafana dashboard
+kubectl port-forward svc/grafana 3000:3000 -n monitoring
+http://localhost:3000 (admin/securepassword)
+
+11. Support <a name="support"></a>
+Project Maintainer: Yakub Iliyas
+Email: yakubiliyas12@gmail.com
+Repository: github.com/yakmatic-dev/microservices-k8s
