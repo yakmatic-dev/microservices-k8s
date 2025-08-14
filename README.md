@@ -30,7 +30,7 @@ Online Boutique is a cloud-native microservices demonstration application implem
 | **Grafana**        | Visualization dashboard for monitoring and observability                    |
 | **Alertmanager**   | Handles alerts from Prometheus                                              |
 
-### Deployment Architecture
+## 3. Deployment Architecture <a name="deployment-architecture"></a>
 
 ```mermaid
 graph TD
@@ -51,6 +51,8 @@ graph TD
     Q[PostgreSQL] --> R[Order History]
     S[Horizontal Pod Autoscaler] --> T[CPU/Memory Metrics]
     U[Network Policy] --> V[Service-to-Service Communication]
+    W[Pod Disruption Budget] --> X[Maintain Availability]
+    Y[RBAC] --> Z[Access Control]
 4. Containerization Process <a name="containerization-process"></a>
 All microservices were built from source and pushed to Docker Hub:
 
