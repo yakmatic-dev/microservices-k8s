@@ -32,7 +32,7 @@ Online Boutique is a cloud-native microservices demonstration application implem
 
 ## 3. Deployment Architecture <a name="deployment-architecture"></a>
 
-```mermaid
+
 graph TD
     A[User] --> B[frontend:80]
     B --> C[productcatalogservice:3550]
