@@ -53,10 +53,10 @@ graph TD
     U[Network Policy] --> V[Service-to-Service Communication]
     W[Pod Disruption Budget] --> X[Maintain Availability]
     Y[RBAC] --> Z[Access Control]
-4. Containerization Process <a name="containerization-process"></a>
+4. Containerization Process 
 All microservices were built from source and pushed to Docker Hub:
 
-bash
+
 # Docker images created
 REPOSITORY                          TAG    IMAGE ID       CREATED       SIZE
 yakub363/shoppingassistantservice   v1.0   50ef9c9f9cf7   2 hours ago   428MB
@@ -77,10 +77,10 @@ paymentservice shippingservice emailservice checkoutservice \
 recommendationservice adservice shoppingassistantservice; do
   docker push yakub363/$service:v1.0
 done
-5. Local Deployment with Docker Compose <a name="local-deployment-with-docker-compose"></a>
+5. Local Deployment with Docker Compose 
 The application can be run locally using Docker Compose:
 
-bash
+
 git clone https://github.com/yakmatic-dev/microservices-k8s.git
 cd microservices-k8s
 
@@ -103,8 +103,8 @@ sudo docker compose up -d
 6. Kubernetes Deployment <a name="kubernetes-deployment"></a>
 Full deployment to dev namespace with production-grade configurations:
 
-Service Details <a name="service-details"></a>
-bash
+Service Details 
+
 kubectl get services -n dev
 NAME                            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
 adservice                       ClusterIP   10.108.218.74    <none>        9555/TCP       5m7s
@@ -121,7 +121,7 @@ redis                           ClusterIP   10.111.41.94     <none>        6379/
 shippingservice                 ClusterIP   10.101.186.24    <none>        50051/TCP      5m6s
 shoppingassistantservice        ClusterIP   10.110.239.249   <none>        8080/TCP       5m6s
 Deployment Details <a name="deployment-details"></a>
-bash
+
 kubectl get deployments -n dev
 NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
 ad-deployment                   2/2     2            2           5m7s
@@ -154,7 +154,7 @@ redis-7f799dfdfd                           1         1         1       5m6s
 shipping-deploy-58cf9d6b56                 1         1         1       5m5s
 shoppingassistant-deploy-7b754f7f66        1         1         0       5m5s
 Storage Configuration <a name="storage-configuration"></a>
-bash
+
 kubectl get storageclass
 NAME                 PROVISIONER                RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
 standard (default)   k8s.io/minikube-hostpath   Delete          Immediate           false                  26d
@@ -172,7 +172,7 @@ cartapp-hpa      Deployment/cartapp-deploy   cpu: 2%/60%, memory: 45%/60%   2   
 7. Monitoring Stack <a name="monitoring-stack"></a>
 Production-grade monitoring implemented with Prometheus and Grafana:
 
-bash
+
 # Install Prometheus
 helm install prometheus prometheus-community/prometheus \
   --namespace monitoring
@@ -248,7 +248,7 @@ http://localhost:8080
 kubectl port-forward svc/grafana 3000:3000 -n monitoring
 http://localhost:3000 (admin/securepassword)
 
-11. Support <a name="support"></a>
+11. Support 
 Project Maintainer: Yakub Iliyas
 Email: yakubiliyas12@gmail.com
 Repository: github.com/yakmatic-dev/microservices-k8s
